@@ -5,7 +5,7 @@ REFACTORED: Uses middleware, service layer, standardized responses
 from flask import Blueprint, request, g, current_app
 from pydantic import ValidationError
 
-from schemas import KeyEntryCreateSchema, KeyEntryUpdateSchema
+from schemas import KeyEntryCreateSchema, KeyEntryUpdateSchema  # From schemas package
 from services.key_service import KeyService, KeyExistsError, KeyNotFoundError
 from middleware.auth import require_auth
 from utils.responses import (

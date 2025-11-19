@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 from config import Config
-from models import db
+from models import db  # Now imports from models package
 from utils.email import mail
 from routes.auth import auth_bp
 from routes.keys import keys_bp
@@ -18,7 +18,7 @@ def create_app(config_class=Config):
     mail.init_app(app)
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:5173", "http://localhost:3000"],
+            "origins": ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"]
         }

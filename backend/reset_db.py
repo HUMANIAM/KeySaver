@@ -7,7 +7,7 @@ WARNING: This will delete all existing data!
 """
 import os
 from app import create_app
-from models import db
+from models import db  # db from models package
 
 if __name__ == '__main__':
     app = create_app()

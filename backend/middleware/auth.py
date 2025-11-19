@@ -11,7 +11,7 @@ BENEFIT:
 
 from functools import wraps
 from flask import request, jsonify, current_app, g
-from models import User
+from models import User  # User model from models package
 from utils.tokens import verify_token
 from constants import SESSION_TOKEN_MAX_AGE, HTTP_UNAUTHORIZED, ERROR_UNAUTHORIZED
 

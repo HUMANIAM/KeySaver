@@ -10,6 +10,38 @@ const getHeaders = () => ({
   ...(getToken() && { 'Authorization': `Bearer ${getToken()}` })
 });
 
+/**
+ * Handle API response: parse JSON and extract data
+ * Throws error if response is not ok
+ */
+const handleResponse = async (res: Response) => {
+  const parseJsonSafely = async () => {
+    try {
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        return null;
+      }
+      return await res.json();
+    } catch {
+      return null;
+    }
+  };
+
+  if (!res.ok) {
+    const errorBody = await parseJsonSafely();
+    const message =
+      (errorBody && (errorBody.error || errorBody.message)) ||
+      `Request failed with status ${res.status}`;
+    throw new Error(message);
+  }
+
+  const response = await parseJsonSafely();
+  if (!response) {
+    return null;
+  }
+  return response.data || response;
+};
+
 // Auth endpoints
 export const sendAuthLink = async (email: string) => {
   const res = await fetch(`${API_URL}/auth/send-link`, {
@@ -17,9 +49,7 @@ export const sendAuthLink = async (email: string) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email })
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };
 
 export const verifyToken = async (token: string) => {
@@ -28,9 +58,7 @@ export const verifyToken = async (token: string) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token })
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };
 
 export const setValidator = async (validator: string) => {
@@ -39,18 +67,13 @@ export const setValidator = async (validator: string) => {
     headers: getHeaders(),
     body: JSON.stringify({ validator })
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };
 
 // Key management endpoints
 export const fetchKeys = async () => {
   const res = await fetch(`${API_URL}/keys`, { headers: getHeaders() });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  // Unwrap standardized response format: { data: { keys: [...] } } -> { keys: [...] }
-  return response.data || response;
+  return handleResponse(res);
 };
 
 export const createKey = async (key: string, value: string, tags: string[]) => {
@@ -59,9 +82,7 @@ export const createKey = async (key: string, value: string, tags: string[]) => {
     headers: getHeaders(),
     body: JSON.stringify({ key, value, tags })
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };
 
 export const updateKey = async (id: number, key: string, value: string, tags: string[]) => {
@@ -70,9 +91,7 @@ export const updateKey = async (id: number, key: string, value: string, tags: st
     headers: getHeaders(),
     body: JSON.stringify({ key, value, tags })
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };
 
 export const deleteKey = async (id: number) => {
@@ -80,7 +99,5 @@ export const deleteKey = async (id: number) => {
     method: 'DELETE',
     headers: getHeaders()
   });
-  if (!res.ok) throw new Error((await res.json()).error);
-  const response = await res.json();
-  return response.data || response;
+  return handleResponse(res);
 };

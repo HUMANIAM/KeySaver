@@ -5,7 +5,7 @@ REFACTORED: Uses service layer, middleware, standardized responses
 from flask import Blueprint, request, g, current_app
 from pydantic import ValidationError
 
-from schemas import UserLoginSchema, SetPassphraseSchema, SetValidatorSchema
+from schemas import UserLoginSchema, SetPassphraseSchema, SetValidatorSchema  # From schemas package
 from services.auth_service import AuthService
 from middleware.auth import require_auth
 from utils.responses import (

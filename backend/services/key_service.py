@@ -9,7 +9,7 @@ BENEFITS:
 
 from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
-from models import db, KeyEntry, User
+from models import db, KeyEntry, User  # Models from models package
 
 
 class KeyExistsError(Exception):

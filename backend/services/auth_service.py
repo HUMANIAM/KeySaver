@@ -12,7 +12,7 @@ BENEFITS:
 
 from datetime import datetime
 from typing import Dict, Optional, Tuple
-from models import db, User
+from models import db, User  # Models from models package
 from utils.tokens import generate_token
 from utils.email import send_verification_email
 
