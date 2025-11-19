@@ -6,7 +6,7 @@ BENEFIT: Single source of truth, easy to modify, semantic meaning
 
 # Token expiration times (in seconds)
 SESSION_TOKEN_MAX_AGE = 86400 * 30  # 30 days
-EMAIL_VERIFICATION_TOKEN_MAX_AGE = 3600  # 1 hour
+EMAIL_VERIFICATION_TOKEN_MAX_AGE = 900  # 15 minutes  
 EMAIL_VERIFICATION_PURPOSE = 'email-verification'
 SESSION_PURPOSE = 'session'
 
