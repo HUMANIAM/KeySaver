@@ -1,5 +1,4 @@
 import logo from '../assets/logo.png';
-import { LogIn } from 'lucide-react';
 
 // Logo Component
 const Logo = () => {
@@ -11,16 +10,15 @@ const Logo = () => {
   );
 };
 
-// Login Icon Component
-const LoginIcon = ({ onClick }: { onClick?: () => void }) => {
+// Auth Button Component (Login/Logout)
+const AuthButton = ({ onClick, isLoggedIn }: { onClick?: () => void; isLoggedIn?: boolean }) => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
-      aria-label="Login"
+      className="px-6 py-2 bg-gray-50 text-gray-900 font-medium rounded-md border border-gray-200 hover:bg-gray-100 transition-colors"
+      aria-label={isLoggedIn ? "Logout" : "Login"}
     >
-      <LogIn className="w-5 h-5" />
-      <span>Login</span>
+      {isLoggedIn ? "Log out" : "Log in"}
     </button>
   );
 };
@@ -37,16 +35,17 @@ const Banner = () => {
 };
 
 interface HeaderProps {
-  onLoginClick?: () => void;
+  onAuthClick?: () => void;
+  isLoggedIn?: boolean;
 }
 
-export default function Header({ onLoginClick }: HeaderProps) {
+export default function Header({ onAuthClick, isLoggedIn }: HeaderProps) {
   return (
     <header className="w-full bg-white border-b border-gray-200 px-6 py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Logo />
         <Banner />
-        <LoginIcon onClick={onLoginClick} />
+        <AuthButton onClick={onAuthClick} isLoggedIn={isLoggedIn} />
       </div>
     </header>
   );

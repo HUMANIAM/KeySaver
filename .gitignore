@@ -1,4 +1,15 @@
-# Dependencies
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Node.js / Frontend
 node_modules/
 package-lock.json
 yarn.lock
@@ -15,6 +26,11 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # Logs
 logs/
