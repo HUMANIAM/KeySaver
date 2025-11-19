@@ -1,5 +1,5 @@
 export interface KeyEntry {
-  id: string;
+  id: number;
   key: string;
   value: string;
   tags: string[];
