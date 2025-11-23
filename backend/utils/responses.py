@@ -1,15 +1,3 @@
-"""
-Standardized API response formatters
-WHY: Ensure consistent response format across all endpoints
-BEFORE: Inconsistent response structures make frontend parsing difficult
-AFTER: Predictable, well-structured responses
-BENEFITS:
-- Frontend can reliably parse responses
-- Better error handling
-- Self-documenting API
-- Easier to version
-"""
-
 from typing import Any, Dict, Optional
 from flask import jsonify
 from constants import *

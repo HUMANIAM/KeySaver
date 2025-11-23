@@ -6,3 +6,4 @@ export { useTagsManager } from './useTagsManager';
 export { useFormState } from './useFormState';
 export { useRevealedValues } from './useRevealedValues';
 export { useSearchFilter } from './useSearchFilter';
+export { useCopyToClipboard } from './useCopyToClipboard';

@@ -1,14 +1,3 @@
-"""
-Authentication middleware and decorators
-WHY: Eliminate code duplication (DRY principle)
-BEFORE: Token extraction logic duplicated in 4+ places
-AFTER: Single source of truth, easier to maintain and test
-BENEFIT: 
-- Consistent auth across all endpoints
-- Single point for security updates
-- Easier testing and debugging
-"""
-
 from functools import wraps
 from flask import request, jsonify, current_app, g
 from models import User  # User model from models package
@@ -62,21 +51,18 @@ def require_auth(f):
         def my_endpoint():
             user = g.current_user  # Automatically available
             ...
-    
-    BENEFIT:
-    - Declarative security (clear which routes are protected)
-    - Reduces boilerplate from 10+ lines to 1 decorator
-    - User object automatically available in g.current_user
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = extract_token_from_header()
+        unauth_response = jsonify({'error': ERROR_UNAUTHORIZED}), HTTP_UNAUTHORIZED
+
         if not token:
-            return jsonify({'error': ERROR_UNAUTHORIZED}), HTTP_UNAUTHORIZED
+            return unauth_response
         
         user = get_current_user_from_token(token)
         if not user:
-            return jsonify({'error': ERROR_UNAUTHORIZED}), HTTP_UNAUTHORIZED
+            return unauth_response
         
         # Store user in Flask's g object for access in route handler
         g.current_user = user
@@ -85,24 +71,3 @@ def require_auth(f):
     
     return decorated_function
 
-
-def optional_auth(f):
-    """
-    Decorator for endpoints that work with or without auth
-    Sets g.current_user = None if not authenticated
-    
-    WHY: Some endpoints may want to behave differently for logged in users
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        token = extract_token_from_header()
-        g.current_user = None
-        
-        if token:
-            user = get_current_user_from_token(token)
-            if user:
-                g.current_user = user
-        
-        return f(*args, **kwargs)
-    
-    return decorated_function

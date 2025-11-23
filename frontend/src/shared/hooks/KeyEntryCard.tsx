@@ -1,15 +1,3 @@
-/**
- * Shared KeyEntry card component
- * WHY: DRY principle - eliminate duplicated rendering logic
- * BEFORE: ~40 lines of identical code in 3 components (Search, Update, Delete)
- * AFTER: Single reusable component
- * BENEFITS:
- * - 120 lines → 1 component
- * - Consistent UI across all views
- * - Bug fixes in one place
- * - Easier to add features
- */
-
 import { Button } from "../../shared/ui/button";
 import { Label } from "../../shared/ui/label";
 import { Badge } from "../../shared/ui/badge";
@@ -40,6 +28,7 @@ function KeyNameField({ keyName }: { keyName: string }) {
   );
 }
 
+/** Displays the secret value with visibility toggle and copy button */
 function SecretValueField({
   value,
   isRevealed,
@@ -65,26 +54,24 @@ function SecretValueField({
     <div>
       <Label className="text-gray-500">Value</Label>
       <div className="flex items-center gap-2">
-        <p className="flex-1 font-mono break-all">
+        <p className="flex-1 font-mono">
           {isRevealed ? value : MASKED_VALUE_PLACEHOLDER}
         </p>
-        <div className="flex gap-1 flex-shrink-0">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleCopyClick}
-            title="Copy value"
-          >
-            {isCopied ? (
-              <Check className="h-4 w-4 text-green-600" />
-            ) : (
-              <Copy className="h-4 w-4" />
-            )}
-          </Button>
-          <Button variant="ghost" size="icon" onClick={handleToggleClick}>
-            {isRevealed ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </Button>
-        </div>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleCopyClick}
+          title="Copy value"
+        >
+          {isCopied ? (
+            <Check className="h-4 w-4 text-green-600" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </Button>
+        <Button variant="ghost" size="icon" onClick={handleToggleClick}>
+          {isRevealed ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </Button>
       </div>
     </div>
   );

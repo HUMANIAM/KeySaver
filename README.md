@@ -44,7 +44,8 @@ Key Saver is a full-stack application that allows users to securely store, searc
 - **UI Components**: Radix UI primitives
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
-- **Encryption**: CryptoJS (client-side)
+- **Encryption**: CryptoJS (client-side AES)
+- **State Management**: Custom hooks with composition pattern
 
 ### Backend
 - **Framework**: Flask 3.0 (Python)
@@ -79,13 +80,62 @@ pip install -r requirements.txt
 3. Configure environment:
 ```bash
 cp .env.example .env
-# Edit .env with your email credentials
 ```
+
+   Then edit `.env` file:
+   
+   **a) Generate SECRET_KEY:**
+   ```bash
+   python -c 'import secrets; print(secrets.token_hex(32))'
+   ```
+   
+   **b) Configure for Gmail (example):**
+   ```env
+   # Flask Configuration
+   FLASK_APP=app.py
+   
+   # Environment: 'development' for local, 'production' for deployment
+   FLASK_ENV=development
+   
+   # Debug Mode: True for development, False for production (IMPORTANT!)
+   FLASK_DEBUG=True
+   
+   # SECURITY: Use the generated secret key from step a)
+   SECRET_KEY=a1b2c3d4e5f6789...
+   
+   DATABASE_URL=sqlite:///keysaver.db
+   
+   # Email Configuration (Gmail example)
+   MAIL_SERVER=smtp.gmail.com
+   MAIL_PORT=587
+   MAIL_USE_TLS=True
+   MAIL_USERNAME=yourname@gmail.com
+   MAIL_PASSWORD=abcd efgh ijkl mnop  # 16-char App Password
+   MAIL_DEFAULT_SENDER=yourname@gmail.com
+   
+   # Frontend URL: Update to your actual domain in production
+   FRONTEND_URL=http://localhost:5173
+   ```
+   
+   **⚠️ For Production Deployment:**
+   ```env
+   FLASK_ENV=production
+   FLASK_DEBUG=False  # MUST be False in production!
+   SECRET_KEY=<strong-random-key>  # Generate a new one
+   DATABASE_URL=postgresql://user:pass@host/db  # Use production database
+   FRONTEND_URL=https://yourdomain.com  # Your actual domain
+   ```
+   
+   **To get Gmail App Password:**
+   - Visit: https://myaccount.google.com/apppasswords
+   - Enable 2FA first if not enabled
+   - Generate app password for "Mail"
+   - Copy the 16-character password
 
 4. Run the backend server:
 ```bash
 python app.py
-# Or use: ./run.sh (Linux/Mac) or run.bat (Windows)
+# Or use: ./run.sh (Linux/Mac) 
 ```
 
 Backend will run on `http://localhost:5000`
@@ -125,25 +175,19 @@ npm run dev
 
 ## 🔐 Authentication Flow
 
-1. **Registration**:
-   - Enter your email address
-   - Receive verification email
-   - Click verification link
-   - Set your encryption passphrase
-   - Start using KeySaver
+### For New Users (First Time):
+1. Enter your email address
+2. Receive verification email with a link
+3. Click the verification link
+4. Set your encryption passphrase
+5. Start using KeySaver
 
-2. **Login**:
-   - Enter your email address
-   - Receive login link via email
-   - Click the link
-   - Enter your passphrase (for decryption)
-   - Access your encrypted keys
+### For Existing Users (Login):
+1. Enter your email address
+2. **Immediately** prompted for your passphrase
+3. Enter your passphrase
+4. Access your encrypted keys
 
-## 📚 Documentation
-
-- **Backend API**: See [backend/README.md](backend/README.md)
-- **Integration Guide**: See [INTEGRATION.md](INTEGRATION.md)
-- **Frontend Setup**: See [frontend/README.md](frontend/README.md)
 
 ## 🔒 Security Features
 
@@ -153,23 +197,5 @@ npm run dev
 - ✅ **Token-based Sessions**: Secure authentication tokens
 - ✅ **Passphrase Never Stored**: Your passphrase stays on your device
 - ✅ **Zero-knowledge Architecture**: Server cannot decrypt your data
-
-## 📁 Project Structure
-
-```
-KeySaver/
-├── backend/              # Flask API server
-│   ├── app.py           # Main application
-│   ├── models.py        # Database models
-│   ├── schemas.py       # Pydantic schemas
-│   ├── routes/          # API endpoints
-│   └── utils/           # Helper functions
-├── frontend/            # React application
-│   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── types/       # TypeScript types
-│   │   └── utils/       # Utility functions
-│   └── public/
-└── INTEGRATION.md       # Integration guide
 
 

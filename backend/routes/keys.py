@@ -1,7 +1,3 @@
-"""
-Key management routes
-REFACTORED: Uses middleware, service layer, standardized responses
-"""
 from flask import Blueprint, request, g, current_app
 from pydantic import ValidationError
 
