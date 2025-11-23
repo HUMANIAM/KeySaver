@@ -18,7 +18,7 @@ def create_app(config_class=Config):
     mail.init_app(app)
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+            "origins": app.config["FRONTEND_URL"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"]
         }

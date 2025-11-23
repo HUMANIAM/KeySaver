@@ -1,10 +1,3 @@
-/**
- * KeyManager - Main key management component
- * REFACTORED: Uses custom hook for state management
- * BEFORE: 130 lines with mixed concerns
- * AFTER: 60 lines, focused on UI composition
- * BENEFIT: 61% reduction, better separation of concerns
- */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shared/ui/tabs";
 import { Card, CardContent } from "../../shared/ui/card";
 import { AddKeyForm } from "./AddKeyForm";

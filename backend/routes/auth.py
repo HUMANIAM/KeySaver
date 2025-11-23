@@ -1,7 +1,3 @@
-"""
-Authentication routes
-REFACTORED: Uses service layer, middleware, standardized responses
-"""
 from flask import Blueprint, request, g, current_app
 from pydantic import ValidationError
 

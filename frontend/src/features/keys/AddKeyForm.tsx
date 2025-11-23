@@ -1,7 +1,3 @@
-/**
- * AddKeyForm - Refactored with SOLID principles
- * Uses shared components and hooks for maximum reusability
- */
 import { Button } from '../../shared/ui/button';
 import { Input } from '../../shared/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../shared/ui/card';

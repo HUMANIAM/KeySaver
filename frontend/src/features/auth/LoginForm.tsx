@@ -1,7 +1,3 @@
-/**
- * Refactored LoginForm - Clean code architecture
- * Orchestrates authentication flow using service layer and subcomponents
- */
 import { X } from 'lucide-react';
 import { useRef, forwardRef, useImperativeHandle, useReducer, useEffect } from 'react';
 import { setToken } from '../../services/api';

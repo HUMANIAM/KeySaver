@@ -1,8 +1,3 @@
-/**
- * UpdateKey - Refactored with composition and DRY principles
- * BEFORE: 290 lines, god component with 95-line form
- * AFTER: Clean composition with reusable components
- */
 import { useState } from 'react';
 import { Button } from '../../shared/ui/button';
 import { Input } from '../../shared/ui/input';
