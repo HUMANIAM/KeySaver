@@ -2,8 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shared/ui/tabs";
 import { Card, CardContent } from "../../shared/ui/card";
 import { AddKeyForm } from "./AddKeyForm";
 import { SearchKeys } from "./SearchKeys";
-import { UpdateKey } from "./UpdateKey";
-import { DeleteKeys } from "./DeleteKeys";
+import { ManageKeys } from "./ManageKeys";
 import { useKeys } from "./useKeys";
 
 export default function KeyManager() {
@@ -39,11 +38,10 @@ export default function KeyManager() {
         <Card className="shadow-lg">
           <CardContent className="pt-6">
             <Tabs defaultValue="add" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="add">Add</TabsTrigger>
                 <TabsTrigger value="search">Search</TabsTrigger>
-                <TabsTrigger value="update">Update</TabsTrigger>
-                <TabsTrigger value="delete">Delete</TabsTrigger>
+                <TabsTrigger value="manage">Manage</TabsTrigger>
               </TabsList>
               
               <TabsContent value="add">
@@ -54,12 +52,8 @@ export default function KeyManager() {
                 <SearchKeys entries={entries} />
               </TabsContent>
               
-              <TabsContent value="update">
-                <UpdateKey entries={entries} onUpdate={updateKey} />
-              </TabsContent>
-              
-              <TabsContent value="delete">
-                <DeleteKeys entries={entries} onDelete={deleteKey} />
+              <TabsContent value="manage">
+                <ManageKeys entries={entries} onUpdate={updateKey} onDelete={deleteKey} />
               </TabsContent>
             </Tabs>
           </CardContent>

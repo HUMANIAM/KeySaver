@@ -1,6 +1,6 @@
 /**
  * Custom hook for managing revealed/hidden values
- * DRY - Used across Search, Update, Delete components
+ * DRY - Used across Search and Manage components
  */
 import { useState, useCallback } from 'react';
 

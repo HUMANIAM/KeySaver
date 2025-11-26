@@ -6,7 +6,7 @@ interface EmptyStateProps {
 
 /**
  * Reusable empty state message
- * Used across: SearchKeys, DeleteKeys, UpdateKey
+ * Used across: SearchKeys, ManageKeys
  */
 export function EmptyState({ 
   hasSearchQuery,
