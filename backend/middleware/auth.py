@@ -2,7 +2,7 @@ from functools import wraps
 from flask import request, jsonify, current_app, g
 from models import User  # User model from models package
 from utils.tokens import verify_token
-from constants import SESSION_TOKEN_MAX_AGE, HTTP_UNAUTHORIZED, ERROR_UNAUTHORIZED
+from constants import SESSION_TOKEN_MAX_AGE, HTTP_UNAUTHORIZED, ERROR_UNAUTHORIZED, SESSION_PURPOSE
 
 
 def extract_token_from_header():
@@ -33,7 +33,7 @@ def get_current_user_from_token(token: str):
         User object or None if invalid
     """
     try:
-        email = verify_token(token, purpose='session', max_age=SESSION_TOKEN_MAX_AGE)
+        email = verify_token(token, purpose=SESSION_PURPOSE, max_age=SESSION_TOKEN_MAX_AGE)
         user = User.query.filter_by(email=email, is_verified=True).first()
         return user
     except (ValueError, Exception) as e:

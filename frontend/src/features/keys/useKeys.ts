@@ -42,7 +42,7 @@ export function useKeys(): UseKeysReturn {
   const loadKeys = useCallback(async () => {
     const passphrase = getPassphrase();
     if (!passphrase) {
-      setError("Passphrase not set. Please log in again.");
+      // Passphrase timeout is handled by App component
       setLoading(false);
       return;
     }

@@ -1,4 +1,3 @@
-import { X } from 'lucide-react';
 import { useRef, forwardRef, useImperativeHandle, useReducer, useEffect } from 'react';
 import { setToken } from '../../services/api';
 import { ERROR_MESSAGES } from '../../shared/constants';
@@ -26,7 +25,6 @@ import { PassphraseStep } from './components/PassphraseStep';
 
 // Types
 interface LoginFormProps {
-  onClose: () => void;
   onLoginSuccess?: () => void;
 }
 
@@ -35,7 +33,7 @@ export interface LoginFormRef {
 }
 
 const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
-  ({ onClose, onLoginSuccess }, ref) => {
+  ({ onLoginSuccess }, ref) => {
     const emailInputRef = useRef<HTMLInputElement>(null);
     const [state, dispatch] = useReducer(loginFormReducer, initialState);
 
@@ -60,6 +58,7 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
       
       try {
         const result = await authService.verifyEmailToken(token);
+        setToken(result.token);
         dispatch({
           type: 'SET_PASSPHRASE_REQUIRED',
           payload: {
@@ -174,14 +173,10 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-73px)] bg-white">
         <div className="relative bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-200">
-          <button onClick={onClose} className="absolute top-4 right-4" aria-label="Close">
-            <X className="w-6 h-6 text-gray-400 hover:text-gray-600" />
-          </button>
-
           <div className="space-y-6 mt-2">
             <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
 
-            <ErrorMessage message={state.error} />
+            {!isPassphraseStep && <ErrorMessage message={state.error} />}
 
             {isEmailStep && (
               <EmailStep
@@ -199,6 +194,8 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
                 passphrase={state.passphrase}
                 onPassphraseChange={handlePassphraseChange}
                 onSubmit={submitPassphrase}
+                loading={state.loading}
+                error={state.error}
               />
             )}
           </div>

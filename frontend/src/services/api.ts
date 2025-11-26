@@ -1,9 +1,25 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { clearPassphrase } from '../shared/utils/encryption';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+// Session timeout callback - set by App component
+let onSessionTimeout: (() => void) | null = null;
+
+export const setSessionTimeoutCallback = (callback: () => void) => {
+  onSessionTimeout = callback;
+};
 
 // Auth token management
 export const getToken = () => localStorage.getItem('authToken');
 export const setToken = (token: string) => localStorage.setItem('authToken', token);
 export const clearToken = () => localStorage.removeItem('authToken');
+
+// Handle session timeout (401 response)
+const handleSessionTimeout = () => {
+  clearToken();
+  clearPassphrase();
+  onSessionTimeout?.();
+};
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -28,6 +44,11 @@ const handleResponse = async (res: Response) => {
   };
 
   if (!res.ok) {
+    // Handle 401 Unauthorized - session expired
+    if (res.status === 401) {
+      handleSessionTimeout();
+    }
+    
     const errorBody = await parseJsonSafely();
     const message =
       (errorBody && (errorBody.error || errorBody.message)) ||
@@ -66,6 +87,13 @@ export const setValidator = async (validator: string) => {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify({ validator })
+  });
+  return handleResponse(res);
+};
+
+export const getUserValidator = async () => {
+  const res = await fetch(`${API_URL}/auth/user-validator`, {
+    headers: getHeaders()
   });
   return handleResponse(res);
 };

@@ -9,7 +9,7 @@ from utils.responses import (
     unauthorized_response, not_found_response, internal_error_response
 )
 from utils.tokens import verify_token
-from constants import EMAIL_VERIFICATION_TOKEN_MAX_AGE
+from constants import EMAIL_VERIFICATION_TOKEN_MAX_AGE, EMAIL_VERIFICATION_PURPOSE, SESSION_PURPOSE
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
@@ -56,7 +56,7 @@ def verify_email():
             return validation_error_response({'token': 'Token is required'})
         
         # Verify token
-        email = verify_token(token, 'email-verification', max_age=EMAIL_VERIFICATION_TOKEN_MAX_AGE)
+        email = verify_token(token, EMAIL_VERIFICATION_PURPOSE, max_age=EMAIL_VERIFICATION_TOKEN_MAX_AGE)
         if not email:
             return unauthorized_response('Invalid or expired token')
         
@@ -96,6 +96,22 @@ def set_validator():
         return validation_error_response(e.errors())
     except Exception as e:
         current_app.logger.error(f"Set validator error: {str(e)}")
+        return internal_error_response()
+
+
+@auth_bp.route('/user-validator', methods=['GET'])
+@require_auth
+def get_user_validator():
+    """
+    Get user's passphrase validator for validation on refresh
+    WHY: Needed when user refreshes page and needs to re-enter passphrase
+    """
+    try:
+        return success_response(data={
+            'validator': g.current_user.passphrase_validator
+        })
+    except Exception as e:
+        current_app.logger.error(f"Get user validator error: {str(e)}")
         return internal_error_response()
 
 

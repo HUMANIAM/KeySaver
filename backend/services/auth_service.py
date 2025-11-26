@@ -14,6 +14,7 @@ from datetime import datetime
 from typing import Dict, Optional, Tuple
 from models import db, User  # Models from models package
 from utils.tokens import generate_token
+from constants import EMAIL_VERIFICATION_PURPOSE, SESSION_PURPOSE
 from utils.email import send_verification_email
 
 
@@ -50,7 +51,7 @@ class AuthService:
         Returns:
             Generated token string
         """
-        token = generate_token(user.email, purpose='email-verification')
+        token = generate_token(user.email, purpose=EMAIL_VERIFICATION_PURPOSE)
         verification_url = f"{frontend_url}?token={token}"
         send_verification_email(user.email, verification_url)
         return token
@@ -69,7 +70,7 @@ class AuthService:
         user.is_verified = True
         user.last_login = datetime.utcnow()
         db.session.commit()
-        return generate_token(user.email, 'session')
+        return generate_token(user.email, SESSION_PURPOSE)
     
     @staticmethod
     def create_session_for_user(user: User) -> str:
@@ -82,7 +83,7 @@ class AuthService:
         Returns:
             Session token string
         """
-        return generate_token(user.email, 'session')
+        return generate_token(user.email, SESSION_PURPOSE)
     
     @staticmethod
     def set_passphrase_validator(user: User, encrypted_validator: str) -> None:

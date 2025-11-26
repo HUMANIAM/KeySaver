@@ -5,10 +5,16 @@ BENEFIT: Single source of truth, easy to modify, semantic meaning
 """
 
 # Token expiration times (in seconds)
-SESSION_TOKEN_MAX_AGE = 86400 * 30  # 30 days
+SESSION_TOKEN_MAX_AGE = 1800  # 30 minutes
 EMAIL_VERIFICATION_TOKEN_MAX_AGE = 900  # 15 minutes  
+
+# Token purposes (standardized strings)
 EMAIL_VERIFICATION_PURPOSE = 'email-verification'
 SESSION_PURPOSE = 'session'
+
+# JWT Configuration
+JWT_ALGORITHM = 'HS256'
+JWT_SESSION_DURATION_MINUTES = 30
 
 # Passphrase validation
 PASSPHRASE_VALIDATION_STRING = "PASSPHRASE_VALIDATION_TEST"
