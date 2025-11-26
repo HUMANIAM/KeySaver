@@ -8,6 +8,7 @@ export interface LoginFormState {
   step: Step;
   email: string;
   passphrase: string;
+  confirmPassphrase: string;
   error: string;
   loading: boolean;
   authToken: string;
@@ -17,6 +18,7 @@ export interface LoginFormState {
 export type LoginFormAction =
   | { type: 'SET_EMAIL'; payload: string }
   | { type: 'SET_PASSPHRASE'; payload: string }
+  | { type: 'SET_CONFIRM_PASSPHRASE'; payload: string }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_LOADING'; payload: boolean }
@@ -31,6 +33,7 @@ export const initialState: LoginFormState = {
   step: 'email',
   email: '',
   passphrase: '',
+  confirmPassphrase: '',
   error: '',
   loading: false,
   authToken: '',
@@ -44,6 +47,9 @@ export function loginFormReducer(state: LoginFormState, action: LoginFormAction)
 
     case 'SET_PASSPHRASE':
       return { ...state, passphrase: action.payload };
+
+    case 'SET_CONFIRM_PASSPHRASE':
+      return { ...state, confirmPassphrase: action.payload };
 
     case 'SET_ERROR':
       return { ...state, error: action.payload, loading: false };

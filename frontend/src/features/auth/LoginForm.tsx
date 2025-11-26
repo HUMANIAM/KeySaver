@@ -154,6 +154,10 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
       dispatch({ type: 'SET_PASSPHRASE', payload: passphrase });
     }
 
+    function handleConfirmPassphraseChange(confirmPassphrase: string): void {
+      dispatch({ type: 'SET_CONFIRM_PASSPHRASE', payload: confirmPassphrase });
+    }
+
     function handleTryDifferentEmail(): void {
       dispatch({ type: 'RESET_TO_EMAIL' });
     }
@@ -162,6 +166,7 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
     const isEmailStep = state.step === 'email';
     const isSentStep = state.step === 'sent';
     const isPassphraseStep = state.step === 'passphrase';
+    const isNewUser = isPassphraseStep && !state.userValidator; // New user if no validator
     const title = isPassphraseStep ? 'Enter Passphrase' : 'Login to KeySaver';
 
     // Render loading state
@@ -196,6 +201,9 @@ const LoginForm = forwardRef<LoginFormRef, LoginFormProps>(
                 onSubmit={submitPassphrase}
                 loading={state.loading}
                 error={state.error}
+                isNewUser={isNewUser}
+                confirmPassphrase={state.confirmPassphrase}
+                onConfirmPassphraseChange={handleConfirmPassphraseChange}
               />
             )}
           </div>
